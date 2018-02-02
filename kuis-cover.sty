@@ -9,8 +9,8 @@
 \DeclareOption{master}{\DS@mastertrue}
 \newif\ifDS@en
 \DS@enfalse
-\DeclareOption{en}{\DS@entrue}
-%% senior theses must be written in Japanese, so "en" will be ignored
+\DeclareOption{english}{\DS@entrue}
+%% senior theses must be written in Japanese, so "english" will be ignored
 \ifDS@master\else\DS@enfalse\fi  
 \ProcessOptions
 
@@ -47,22 +47,19 @@
 \def\SUPERVISOR#1{\gdef\@SUPERVISOR{#1}}
 \def\DEPARTMENT#1{\gdef\@DEPARTMENT{#1}}
 
-\def\ENTRANCEYEAR#1{%
- \setcounter{ENTRANCEYEAR}{#1}%
- \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}}
-\def\COMPLETIONYEAR#1{%
- \setcounter{COMPLETIONYEAR}{#1}%
- \setcounter{COMPLETIONSYEAR}{#1}\addtocounter{COMPLETIONSYEAR}{-1}%
+\def\ENTRANCEMONTHYEAR#1#2{%
+ \setcounter{ENTRANCEMONTH}{#1}%
+ \setcounter{ENTRANCEYEAR}{#2}%
+ \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}
+ \gdef\@ENTRANCEMONTH{\the\value{ENTRANCEMONTH}}}
+\def\COMPLETIONMONTHYEAR#1#2{%
+ \setcounter{COMPLETIONMONTH}{#1}%
+ \setcounter{COMPLETIONYEAR}{#2}%
+ \setcounter{COMPLETIONSYEAR}{#2}%
+ \ifnum \the\value{COMPLETIONMONTH}<4 \addtocounter{COMPLETIONSYEAR}{-1}\fi%
  \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
  \gdef\@COMPLETIONSYEAR{\the\value{COMPLETIONSYEAR}}%
- }
-\def\ENTRANCEMONTH#1{%
- \setcounter{ENTRANCEMONTH}{#1}%
- \gdef\@ENTRANCEMONTH{\the\value{ENTRANCEMONTH}}}
-\def\COMPLETIONMONTH#1{%
- \setcounter{COMPLETIONMONTH}{#1}%
- \gdef\@COMPLETIONMONTH{\the\value{COMPLETIONMONTH}}%
- }
+ \gdef\@COMPLETIONMONTH{\the\value{COMPLETIONMONTH}}}
 
 \ifDS@en
 \def\MKT@MASTERTHESIS{Master's Thesis}
@@ -117,8 +114,8 @@
      \monthname[\@ENTRANCEMONTH] {\@ENTRANCEYEAR} of Entry\cr
      \monthname[\@COMPLETIONMONTH] {\@COMPLETIONYEAR} of Completion\cr%
      \else
-     平成{\@ENTRANCEYEAR}年{4}月入学\cr
-     平成{\@COMPLETIONYEAR}年{3}月\MKT@GRADUATE\cr%
+     平成{\@ENTRANCEYEAR}年{\@ENTRANCEMONTH}月入学\cr
+     平成{\@COMPLETIONYEAR}年{\@COMPLETIONMONTH}月\MKT@GRADUATE\cr%
      \fi}}}%
    \vskip2cm
    \CL{\Large \@AUTHOR}%
