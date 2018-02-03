@@ -1,11 +1,17 @@
 \usepackage{a4full}
 \usepackage{plext}
+\usepackage{datetime}
 
 \makeatletter
 %% -------------------------------------------------------------------
 \newif\ifDS@master
 \DS@masterfalse
 \DeclareOption{master}{\DS@mastertrue}
+\newif\ifDS@en
+\DS@enfalse
+\DeclareOption{english}{\DS@entrue}
+%% senior theses must be written in Japanese, so "english" will be ignored
+\ifDS@master\else\DS@enfalse\fi  
 \ProcessOptions
 
 \topmargin=0pt
@@ -31,6 +37,8 @@
 \newcounter{ENTRANCEYEAR}
 \newcounter{COMPLETIONYEAR}
 \newcounter{COMPLETIONSYEAR}
+\newcounter{ENTRANCEMONTH}\setcounter{ENTRANCEMONTH}{4}
+\newcounter{COMPLETIONMONTH}\setcounter{COMPLETIONMONTH}{3}
 
 \long\def\TITLE{\@dblarg{\@XTITLE}}
 \long\def\@XTITLE[#1]#2{\gdef\@TITLEFORBACK{#1}\gdef\@TITLE{#2}}
@@ -39,16 +47,26 @@
 \def\SUPERVISOR#1{\gdef\@SUPERVISOR{#1}}
 \def\DEPARTMENT#1{\gdef\@DEPARTMENT{#1}}
 
-\def\ENTRANCEYEAR#1{%
- \setcounter{ENTRANCEYEAR}{#1}%
- \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}}
-\def\COMPLETIONYEAR#1{%
- \setcounter{COMPLETIONYEAR}{#1}%
- \setcounter{COMPLETIONSYEAR}{#1}\addtocounter{COMPLETIONSYEAR}{-1}%
+\def\ENTRANCEMONTHYEAR#1#2{%
+ \setcounter{ENTRANCEMONTH}{#1}%
+ \setcounter{ENTRANCEYEAR}{#2}%
+ \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}
+ \gdef\@ENTRANCEMONTH{\the\value{ENTRANCEMONTH}}}
+\def\COMPLETIONMONTHYEAR#1#2{%
+ \setcounter{COMPLETIONMONTH}{#1}%
+ \setcounter{COMPLETIONYEAR}{#2}%
+ \setcounter{COMPLETIONSYEAR}{#2}%
+ \ifnum \the\value{COMPLETIONMONTH}<4 \addtocounter{COMPLETIONSYEAR}{-1}\fi%
  \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
  \gdef\@COMPLETIONSYEAR{\the\value{COMPLETIONSYEAR}}%
- }
+ \gdef\@COMPLETIONMONTH{\the\value{COMPLETIONMONTH}}}
 
+\ifDS@en
+\def\MKT@MASTERTHESIS{Master's Thesis}
+\def\MKT@SUPERVISOR{Supervisor}
+\def\MKT@MASTERSCHOOL{Graduate School of Informatics, Kyoto University}
+\def\MKT@MASTERDEPARTMENT{Department of {\@DEPARTMENT}, Master's Program}
+\else
 \def\MKT@BACHELORTHESIS{特別研究報告書}
 \def\MKT@MASTERTHESIS{修士論文}
 \def\MKT@SUPERVISOR{指導教員}
@@ -58,6 +76,7 @@
 \def\MKT@MASTERDEPARTMENT{{\@DEPARTMENT}専攻 修士課程}
 \def\MKT@BACHELORGRADUATE{卒業}
 \def\MKT@MASTERGRADUATE{修了}
+\fi
 
 \def\MKT@THESIS{\ifDS@master{\MKT@MASTERTHESIS}\else{\MKT@BACHELORTHESIS}\fi}
 \def\MKT@DEPARTMENT{%
@@ -91,8 +110,13 @@
    \vskip.5cm
    \CL{\large
     \vbox{\halign{\hfil ##\hfil\cr%
-     平成{\@ENTRANCEYEAR}年{4}月入学\cr
-     平成{\@COMPLETIONYEAR}年{3}月\MKT@GRADUATE\cr}}}%
+     \ifDS@en
+     \monthname[\@ENTRANCEMONTH] {\@ENTRANCEYEAR} of Entry\cr
+     \monthname[\@COMPLETIONMONTH] {\@COMPLETIONYEAR} of Completion\cr%
+     \else
+     平成{\@ENTRANCEYEAR}年{\@ENTRANCEMONTH}月入学\cr
+     平成{\@COMPLETIONYEAR}年{\@COMPLETIONMONTH}月\MKT@GRADUATE\cr%
+     \fi}}}%
    \vskip2cm
    \CL{\Large \@AUTHOR}%
    \vskip2cm
@@ -116,7 +140,11 @@
    \hfil
    \@AUTHOR
    \hfil
+   \ifDS@en
+   \@COMPLETIONSYEAR
+   \else
    平成\rensuji{\@COMPLETIONSYEAR}年度
+   \fi
    \quad
   }%
  \hfil}%
