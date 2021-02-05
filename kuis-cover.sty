@@ -11,7 +11,7 @@
 \DS@enfalse
 \DeclareOption{english}{\DS@entrue}
 %% senior theses must be written in Japanese, so "english" will be ignored
-\ifDS@master\else\DS@enfalse\fi  
+\ifDS@master\else\DS@enfalse\fi
 \ProcessOptions
 
 \topmargin=0pt
@@ -50,16 +50,76 @@
 \def\ENTRANCEMONTHYEAR#1#2{%
  \setcounter{ENTRANCEMONTH}{#1}%
  \setcounter{ENTRANCEYEAR}{#2}%
- \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}
- \gdef\@ENTRANCEMONTH{\the\value{ENTRANCEMONTH}}}
+ \gdef\@ENTRANCEMONTH{\the\value{ENTRANCEMONTH}}%
+ \ifDS@en%
+  \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}%
+ \else%
+  \ifnum \the\value{ENTRANCEYEAR}>2018%
+   \ifnum \the\value{ENTRANCEYEAR}<2020%
+    \ifnum \the\value{ENTRANCEMONTH}>4%
+     \gdef\@ENTRANCEERA{令和}%
+     \gdef\@ENTRANCEYEAR{元}%
+    \else
+     \gdef\@ENTRANCEERA{平成}%
+     \addtocounter{ENTRANCEYEAR}{-1988}%
+     \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}%
+    \fi
+   \else%
+    \gdef\@ENTRANCEERA{令和}%
+    \addtocounter{ENTRANCEYEAR}{-2018}%
+    \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}%
+   \fi%
+  \else%
+   \gdef\@ENTRANCEERA{平成}%
+   \addtocounter{ENTRANCEYEAR}{-1988}%
+   \gdef\@ENTRANCEYEAR{\the\value{ENTRANCEYEAR}}%
+  \fi%
+ \fi}
+
 \def\COMPLETIONMONTHYEAR#1#2{%
  \setcounter{COMPLETIONMONTH}{#1}%
  \setcounter{COMPLETIONYEAR}{#2}%
  \setcounter{COMPLETIONSYEAR}{#2}%
+ \gdef\@COMPLETIONMONTH{\the\value{COMPLETIONMONTH}}%
  \ifnum \the\value{COMPLETIONMONTH}<4 \addtocounter{COMPLETIONSYEAR}{-1}\fi%
- \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
- \gdef\@COMPLETIONSYEAR{\the\value{COMPLETIONSYEAR}}%
- \gdef\@COMPLETIONMONTH{\the\value{COMPLETIONMONTH}}}
+ \ifDS@en%
+  \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
+  \gdef\@COMPLETIONSYEAR{\the\value{COMPLETIONSYEAR}}%
+ \else%
+  \ifnum \the\value{COMPLETIONYEAR}>2018%
+   \ifnum \the\value{COMPLETIONYEAR}<2020%
+    \ifnum \the\value{COMPLETIONMONTH}>4%
+     \gdef\@COMPLETIONERA{令和}%
+     \gdef\@COMPLETIONYEAR{元}%
+    \else
+     \gdef\@COMPLETIONERA{平成}%
+     \addtocounter{COMPLETIONYEAR}{-1988}%
+     \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
+    \fi
+   \else%
+    \gdef\@COMPLETIONERA{令和}%
+    \addtocounter{COMPLETIONYEAR}{-2018}%
+    \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
+   \fi%
+  \else%
+   \gdef\@COMPLETIONERA{平成}%
+   \addtocounter{COMPLETIONYEAR}{-1988}%
+   \gdef\@COMPLETIONYEAR{\the\value{COMPLETIONYEAR}}%
+  \fi%
+  \ifnum \the\value{COMPLETIONSYEAR}>2018%
+   \gdef\@COMPLETIONSERA{令和}%
+    \ifnum \the\value{COMPLETIONSYEAR}<2020%
+     \gdef\@COMPLETIONSYEAR{元}%
+    \else
+     \addtocounter{COMPLETIONSYEAR}{-2018}%
+     \gdef\@COMPLETIONSYEAR{\rensuji{\the\value{COMPLETIONSYEAR}}}%
+    \fi%
+  \else%
+   \gdef\@COMPLETIONSERA{平成}%
+   \addtocounter{COMPLETIONSYEAR}{-1988}%
+   \gdef\@COMPLETIONSYEAR{\rensuji{\the\value{COMPLETIONSYEAR}}}%
+  \fi%
+ \fi}
 
 \ifDS@en
 \def\MKT@MASTERTHESIS{Master's Thesis}
@@ -114,8 +174,8 @@
      \monthname[\@ENTRANCEMONTH] {\@ENTRANCEYEAR} of Entry\cr
      \monthname[\@COMPLETIONMONTH] {\@COMPLETIONYEAR} of Completion\cr%
      \else
-     平成{\@ENTRANCEYEAR}年{\@ENTRANCEMONTH}月入学\cr
-     平成{\@COMPLETIONYEAR}年{\@COMPLETIONMONTH}月\MKT@GRADUATE\cr%
+     {\@ENTRANCEERA}{\@ENTRANCEYEAR}年{\@ENTRANCEMONTH}月入学\cr
+     {\@COMPLETIONERA}{\@COMPLETIONYEAR}年{\@COMPLETIONMONTH}月\MKT@GRADUATE\cr%
      \fi}}}%
    \vskip2cm
    \CL{\Large \@AUTHOR}%
@@ -143,7 +203,7 @@
    \ifDS@en
    \@COMPLETIONSYEAR
    \else
-   平成\rensuji{\@COMPLETIONSYEAR}年度
+   \@COMPLETIONSERA{\@COMPLETIONSYEAR}年度
    \fi
    \quad
   }%
