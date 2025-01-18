@@ -45,7 +45,7 @@
 
 \def\AUTHOR#1{\gdef\@AUTHOR{#1}}
 \def\SUPERVISOR#1{\gdef\@SUPERVISOR{#1}}
-\def\DEPARTMENT#1{\gdef\@DEPARTMENT{#1}}
+\def\COURSE#1{\gdef\@COURSE{#1}}
 
 \def\ENTRANCEMONTHYEAR#1#2{%
  \setcounter{ENTRANCEMONTH}{#1}%
@@ -121,27 +121,43 @@
   \fi%
  \fi}
 
-\ifDS@en
+\ifDS@en%
 \def\MKT@MASTERTHESIS{Master's Thesis}
 \def\MKT@SUPERVISOR{Supervisor}
 \def\MKT@MASTERSCHOOL{Graduate School of Informatics, Kyoto University}
-\def\MKT@MASTERDEPARTMENT{Department of {\@DEPARTMENT}, Master's Program}
+\def\MKT@MASTERCOURSE{Course of {\@COURSE},}
+\def\MKT@MASTERDEPARTMENT{Department of Informatics, Master's Program}
 \else
 \def\MKT@BACHELORTHESIS{特別研究報告書}
 \def\MKT@MASTERTHESIS{修士論文}
 \def\MKT@SUPERVISOR{指導教員}
 \def\MKT@BACHELORSCHOOL{京都大学工学部情報学科}
-\def\MKT@MASTERSCHOOL{京都大学大学院情報学研究科}
-\def\MKT@BACHELORDEPARTMENT{{\@DEPARTMENT}コース}
-\def\MKT@MASTERDEPARTMENT{{\@DEPARTMENT}専攻 修士課程}
+\def\MKT@MASTERSCHOOL{京都大学大学院情報学研究科 修士課程}
+\def\MKT@BACHELORCOURSE{{\@COURSE}コース}
+\def\MKT@MASTERCOURSE{{\@COURSE}コース}
+\def\MKT@MASTERDEPARTMENT{{情報学専攻}}
 \def\MKT@BACHELORGRADUATE{卒業}
 \def\MKT@MASTERGRADUATE{修了}
 \fi
 
 \def\MKT@THESIS{\ifDS@master{\MKT@MASTERTHESIS}\else{\MKT@BACHELORTHESIS}\fi}
-\def\MKT@DEPARTMENT{%
-\ifDS@master{\MKT@MASTERSCHOOL}\else{\MKT@BACHELORSCHOOL}\fi \\%
-\ifDS@master{\MKT@MASTERDEPARTMENT}\else{\MKT@BACHELORDEPARTMENT}\fi}
+\def\MKT@COURSE{%
+\ifDS@en%
+\ifDS@master%
+\MKT@MASTERCOURSE\\ %
+\MKT@MASTERDEPARTMENT \\%
+\MKT@MASTERSCHOOL%
+\fi
+\else
+\ifDS@master%
+\MKT@MASTERSCHOOL\\ %
+\MKT@MASTERDEPARTMENT{ }\MKT@MASTERCOURSE%
+\else
+\MKT@BACHELORSCHOOL\\ %
+\MKT@BACHELORCOURSE%
+\fi \\%
+\fi
+}
 \def\MKT@GRADUATE{\ifDS@master{\MKT@MASTERGRADUATE}\else{\MKT@BACHELORGRADUATE}\fi}
 
 \def\MAKETITLE{{%
@@ -166,7 +182,7 @@
    \vfill\vfill\vfill
    \CL{\large
     \vbox{\halign{\hfil ##\hfil\cr%
-     \MKT@DEPARTMENT\crcr}}}%
+     \MKT@COURSE\crcr}}}%
    \vskip.5cm
    \CL{\large
     \vbox{\halign{\hfil ##\hfil\cr%
