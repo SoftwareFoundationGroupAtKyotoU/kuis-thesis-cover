@@ -122,11 +122,15 @@
  \fi}
 
 \ifDS@en%
+\def\MKT@BACHELORTHESIS{Graduation Thesis}
 \def\MKT@MASTERTHESIS{Master's Thesis}
 \def\MKT@SUPERVISOR{Supervisor}
+\def\MKT@BACHELORSCHOOL{Faculty of Engineering}
+\def\MKT@BACHELORUNIVERSITY{Kyoto University}
 \def\MKT@MASTERSCHOOL{Graduate School of Informatics, Kyoto University}
 \def\MKT@MASTERCOURSE{Course of {\@COURSE},}
 \def\MKT@MASTERDEPARTMENT{Department of Informatics, Master's Program}
+\def\MKT@BACHELORDEPARTMENT{{Undergraduate School of Informatics and Mathematical Science}}
 \else
 \def\MKT@BACHELORTHESIS{特別研究報告書}
 \def\MKT@MASTERTHESIS{修士論文}
@@ -147,6 +151,10 @@
 \MKT@MASTERCOURSE\\ %
 \MKT@MASTERDEPARTMENT \\%
 \MKT@MASTERSCHOOL%
+\else
+\MKT@BACHELORDEPARTMENT\\ %
+\MKT@BACHELORSCHOOL\\ %
+\MKT@BACHELORUNIVERSITY%
 \fi
 \else
 \ifDS@master%
