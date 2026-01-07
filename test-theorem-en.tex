@@ -5,8 +5,10 @@
 
 % Define theorem environment numbered by chapter
 \newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{definition}{Definition}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}  % Shares counter with theorem
+\newtheorem{definition}{Definition}[chapter]  % Has its own counter
+% Note: lemma shares numbering with theorem, while definition has its own counter.
+% This demonstrates both numbering styles work correctly with the fix.
 
 \begin{document}
 

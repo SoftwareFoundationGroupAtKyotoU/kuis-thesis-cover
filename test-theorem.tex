@@ -5,8 +5,10 @@
 
 % Define theorem environment numbered by chapter
 \newtheorem{theorem}{定理}[chapter]  % 定理 = Theorem in Japanese
-\newtheorem{lemma}[theorem]{補題}     % 補題 = Lemma in Japanese
-\newtheorem{definition}{定義}[chapter] % 定義 = Definition in Japanese
+\newtheorem{lemma}[theorem]{補題}     % 補題 = Lemma in Japanese (shares counter with theorem)
+\newtheorem{definition}{定義}[chapter] % 定義 = Definition in Japanese (has its own counter)
+% Note: lemma shares numbering with theorem, while definition has its own counter.
+% This demonstrates both numbering styles work correctly with the fix.
 
 \begin{document}
 
