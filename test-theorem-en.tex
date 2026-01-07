@@ -1,0 +1,49 @@
+% English test file to verify theorem numbering fix
+% This document should be used with jbook or jreport class which support chapters
+\documentclass{jbook}
+\usepackage[english]{kuis-cover}
+
+% Define theorem environment numbered by chapter
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}  % Shares counter with theorem
+\newtheorem{definition}{Definition}[chapter]  % Has its own counter
+% Note: lemma shares numbering with theorem, while definition has its own counter.
+% This demonstrates both numbering styles work correctly with the fix.
+
+\begin{document}
+
+\chapter{First Chapter}
+
+\section{Introduction}
+
+\begin{theorem}
+This is a theorem. It should display as "Theorem 1.1"
+(NOT as "Theorem Chapter 1.1").
+\end{theorem}
+
+\begin{theorem}
+This is the second theorem. It should display as "Theorem 1.2".
+\end{theorem}
+
+\begin{lemma}
+This is a lemma. It should display as "Lemma 1.3".
+\end{lemma}
+
+\begin{definition}
+This is a definition. It should display as "Definition 1.1".
+\end{definition}
+
+\chapter{Second Chapter}
+
+\section{Another Section}
+
+\begin{theorem}
+This is a theorem in chapter 2. It should display as "Theorem 2.1"
+(NOT as "Theorem Chapter 2.1").
+\end{theorem}
+
+\begin{definition}
+This is a definition in chapter 2. It should display as "Definition 2.1".
+\end{definition}
+
+\end{document}

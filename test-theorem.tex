@@ -1,0 +1,55 @@
+% Test file to verify theorem numbering fix
+% This document should be used with jbook or jreport class which support chapters
+\documentclass{jbook}
+\usepackage{kuis-cover}
+
+% Define theorem environment numbered by chapter
+\newtheorem{theorem}{定理}[chapter]  % 定理 = Theorem in Japanese
+\newtheorem{lemma}[theorem]{補題}     % 補題 = Lemma in Japanese (shares counter with theorem)
+\newtheorem{definition}{定義}[chapter] % 定義 = Definition in Japanese (has its own counter)
+% Note: lemma shares numbering with theorem, while definition has its own counter.
+% This demonstrates both numbering styles work correctly with the fix.
+
+\begin{document}
+
+\chapter{第一章}  % Chapter 1
+
+\section{はじめに}  % Introduction
+
+\begin{theorem}
+これは定理です。番号は「定理1.1」と表示されるべきです。
+% This is a theorem. It should display as "定理1.1" (Theorem 1.1)
+\end{theorem}
+
+\begin{theorem}
+二番目の定理です。番号は「定理1.2」と表示されるべきです。
+% Second theorem. It should display as "定理1.2" (Theorem 1.2)
+\end{theorem}
+
+\begin{lemma}
+補題です。番号は「補題1.3」と表示されるべきです。
+% A lemma. It should display as "補題1.3" (Lemma 1.3)
+\end{lemma}
+
+\begin{definition}
+定義です。番号は「定義1.1」と表示されるべきです。
+% A definition. It should display as "定義1.1" (Definition 1.1)
+\end{definition}
+
+\chapter{第二章}  % Chapter 2
+
+\section{別の章}  % Another chapter
+
+\begin{theorem}
+第二章の定理です。番号は「定理2.1」と表示されるべきです。
+「定理 Chapter 2.1」とは表示されません。
+% Theorem in chapter 2. It should display as "定理2.1" (Theorem 2.1)
+% NOT as "定理 Chapter 2.1"
+\end{theorem}
+
+\begin{definition}
+第二章の定義です。番号は「定義2.1」と表示されるべきです。
+% Definition in chapter 2. It should display as "定義2.1" (Definition 2.1)
+\end{definition}
+
+\end{document}

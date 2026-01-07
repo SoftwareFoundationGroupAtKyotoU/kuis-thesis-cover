@@ -235,4 +235,12 @@
 }}}
 
 %% -------------------------------------------------------------------
+%% Fix for theorem environments numbered by chapter
+%% Ensures that \thechapter outputs only the chapter number (e.g., "3" instead of "Chapter 3")
+%% This is necessary for proper theorem numbering in documents that have chapters
+\@ifundefined{chapter}{}{%
+  % Only apply if chapters exist (jbook, jreport, etc.)
+  \renewcommand{\thechapter}{\arabic{chapter}}%
+}
+%% -------------------------------------------------------------------
 \makeatother
